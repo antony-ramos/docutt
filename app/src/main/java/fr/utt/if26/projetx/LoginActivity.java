@@ -14,6 +14,10 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+// TODO Ajouter la vérification du mail
+// TODO Ajouter le système d'authentification
+// TODO Ajouter la mémoire du login
+
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;

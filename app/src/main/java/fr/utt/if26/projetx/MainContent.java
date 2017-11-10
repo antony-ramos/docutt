@@ -17,7 +17,7 @@ import java.util.List;
  * Created by Antony RAMOS on 10/11/2017.
  */
 
-public class Menu1 extends Fragment {
+public class MainContent extends Fragment {
 
 
     ExpandableListCandidaturesAdapter listAdapter;
@@ -29,7 +29,7 @@ public class Menu1 extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //returning our layout file
         //change R.layout.yourlayoutfilename for each of your fragments
-        return inflater.inflate(R.layout.content_candidatures, container, false);
+        return inflater.inflate(R.layout.content_infos_main, container, false);
     }
 
 
@@ -37,11 +37,11 @@ public class Menu1 extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
-        getActivity().setTitle("Candidatures");
-        ExpandableListView expListView = (ExpandableListView) getActivity().findViewById(R.id.elvCandidatures);
+        getActivity().setTitle("Projet X");
+        /*ExpandableListView expListView = (ExpandableListView) getActivity().findViewById(R.id.elvCandidatures);
         prepareListData();
         ExpandableListCandidaturesAdapter listAdapter = new ExpandableListCandidaturesAdapter(this.getActivity(), listDataHeader, listDataChild);
-        expListView.setAdapter(listAdapter);
+        expListView.setAdapter(listAdapter);*/
     }
 
 

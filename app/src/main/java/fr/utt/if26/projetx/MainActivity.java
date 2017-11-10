@@ -1,7 +1,9 @@
 package fr.utt.if26.projetx;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -18,7 +20,7 @@ import android.view.View;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 // TODO Managing Back Navigation Fragment
-
+    Fragment fragment = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +45,13 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-
+        fragment = new MainContent();
+        if (fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
+        }
     }
 
     public void sendEmail(){
@@ -61,13 +68,18 @@ public class MainActivity extends AppCompatActivity
         startActivity(emailIntent);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                getSupportFragmentManager().popBackStack();
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -125,15 +137,13 @@ public class MainActivity extends AppCompatActivity
 
     private void displaySelectedScreen(int itemId) {
 
-        //creating fragment object
-        Fragment fragment = null;
-
         //initializing the fragment object which is selected
         switch (itemId) {
             case R.id.nav_candidature:
                 fragment = new Menu1();
                 break;
             case R.id.nav_camera:
+
                 break;
             case R.id.nav_slideshow:
                 break;
@@ -143,6 +153,7 @@ public class MainActivity extends AppCompatActivity
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
+            ft.addToBackStack(null);
             ft.commit();
         }
 
