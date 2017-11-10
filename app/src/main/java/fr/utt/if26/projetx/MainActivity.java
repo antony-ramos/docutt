@@ -1,9 +1,9 @@
 package fr.utt.if26.projetx;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -24,14 +24,13 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                sendEmail();
             }
         });
 
@@ -46,6 +45,20 @@ public class MainActivity extends AppCompatActivity
 
 
 
+    }
+
+    public void sendEmail(){
+        Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+        String aEmailList[] = { "user@fakehost.com","user2@fakehost.com" };
+        String aEmailCCList[] = { "user3@fakehost.com","user4@fakehost.com"};
+        String aEmailBCCList[] = { "user5@fakehost.com" };
+        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, aEmailList);
+        emailIntent.putExtra(android.content.Intent.EXTRA_CC, aEmailCCList);
+        emailIntent.putExtra(android.content.Intent.EXTRA_BCC, aEmailBCCList);
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "My subject");
+        emailIntent.setType("plain/text");
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "My message body.");
+        startActivity(emailIntent);
     }
 
     @Override
