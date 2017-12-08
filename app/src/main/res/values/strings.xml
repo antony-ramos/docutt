@@ -46,4 +46,16 @@
     <string name="forgot_password_msg">We just need your registered Email Id to sent you password reset instructions.</string>
     <string name="action_sign_in_short">Register</string>
     <string name="whats_new">Whats\'New</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="filter_ue">UE choisies:</string>
+    <string name="filter_name">Nom du filtre</string>
+    <string name="filter_lundi">Lundi</string>
+    <string name="filter_mardi">Mardi</string>
+    <string name="filter_mercredi">Mercredi</string>
+    <string name="filter_jeudi">Jeudi</string>
+    <string name="filter_vendredi">Vendredi</string>
+    <string name="filter_samedi">Samedi</string>
+    <string name="filter_horaires">Cochez les horaires non voulus:</string>
 </resources>

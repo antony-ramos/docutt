@@ -254,7 +254,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_camera:
 
                 break;
-            case R.id.nav_slideshow:
+            case R.id.nav_filters:
+                fragment = new FilterFragment();
                 break;
         }
 

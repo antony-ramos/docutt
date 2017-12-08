@@ -13,13 +13,9 @@
             android:icon="@android:drawable/ic_menu_save"
             android:title="Mes candidatures" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_filters"
             android:icon="@drawable/ic_menu_manage"
-            android:title="tutorial" />
+            android:title="Mes filtres" />
     </group>
 
     <item android:title="Liste des filtres">
