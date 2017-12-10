@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="statut_choix">
+        <item>Administration</item>
+        <item>Enseignant-chercheur</item>
+        <item>Doctorants</item>
+    </string-array>
+</resources>

@@ -7,7 +7,7 @@
         <item
             android:id="@+id/nav_camera"
             android:icon="@android:drawable/btn_star_big_on"
-            android:title="Mon panier" />
+            android:title="Doctorant" />
         <item
             android:id="@+id/nav_candidature"
             android:icon="@android:drawable/ic_menu_save"

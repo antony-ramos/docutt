@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -22,19 +21,17 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 // TODO : Mettre en place un système de notifications
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Fragment fragment = null;
-
-    private DatabaseReference mFirebaseDatabase;
-    private FirebaseDatabase mFirebaseInstance;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +40,13 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendEmail();
-            }
-        });
+        //FloatingActionButton fab = findViewById(R.id.fab);
+        //fab.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View view) {
+        //        sendEmail();
+        //    }
+        //});
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -57,15 +54,73 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        // Créer la jonction avec la db auth
+        // On récupère le type d'utilisateur et on met un listener si jamais c'est modifié
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        TextView mail = navigationView.getHeaderView(0).findViewById(R.id.textView_nav_mail);
-        TextView name = navigationView.getHeaderView(0).findViewById(R.id.textView_nav_name);
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference mDatabaseUserType = mDatabase.child("users").child(user.getUid()).child("type");
+        DatabaseReference mDatabaseName = mDatabase.child("users").child(user.getUid()).child("nom");
+        DatabaseReference mDatabaseEmail = mDatabase.child("users").child(user.getUid()).child("email");
 
 
-        // TODO Lier ça à la base de données utilisateur
-        mail.setText("salut");
-        name.setText("ca va");
+        // Générer le bon menu de navigation latéral suivant l'information
+
+        final NavigationView navigationView = findViewById(R.id.nav_view);
+
+        // TODO : Gestion du menu selon le type d'utilisateur (Créer dans la db auth le type, le récupérer puis vérifier dans une fonction)
+
+        ValueEventListener typeListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int post = dataSnapshot.getValue(Integer.class);
+                modifyNavigationMenuView(navigationView, post);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        };
+        mDatabaseUserType.addValueEventListener(typeListener);
+
+
+        final TextView mail = navigationView.getHeaderView(0).findViewById(R.id.textView_nav_mail);
+        final TextView name = navigationView.getHeaderView(0).findViewById(R.id.textView_nav_name);
+
+        ValueEventListener nameListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                String post = dataSnapshot.getValue(String.class);
+                name.setText(post);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                name.setText("error name");
+            }
+        };
+        mDatabaseName.addValueEventListener(nameListener);
+
+        ValueEventListener emailListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                String post = dataSnapshot.getValue(String.class);
+                mail.setText(post);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                mail.setText("error name");
+            }
+        };
+        mDatabaseEmail.addValueEventListener(emailListener);
+
+
+        //mail.setText();
+        //name.setText(mDatabase.get);
 
         LinearLayout header = (LinearLayout) navigationView.getHeaderView(0);
         header.setOnClickListener(new View.OnClickListener() {
@@ -77,12 +132,11 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        // On lance la création du menu latéral suivant les informations ci-dessus
+
         navigationView.setNavigationItemSelectedListener(this);
 
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        mDatabase.child("users").child(user.getUid()).setValue("test 1");
-
+        // On lance la création du fragment principal
 
         fragment = new MainContent();
         if (fragment != null) {
@@ -90,6 +144,20 @@ public class MainActivity extends AppCompatActivity
             ft.replace(R.id.content_frame, fragment);
             ft.addToBackStack(null);
             ft.commit();
+        }
+
+        // TODO : bouton pour home
+    }
+
+    // TODO : Faire la gestion du menu latéral
+    private void modifyNavigationMenuView(NavigationView navigationView, int type) {
+        navigationView.getMenu().clear();
+        if (type == 1) {
+            navigationView.inflateMenu(R.menu.activity_main_drawer_doctorant);
+        } else if (type == 2) {
+            navigationView.inflateMenu(R.menu.activity_main_drawer_professeur);
+        } else {
+            navigationView.inflateMenu(R.menu.activity_main_drawer_administration);
         }
     }
 
@@ -146,6 +214,8 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
+
+    // TODO Faire la gestion des boutons du menu latéral
     public boolean onNavigationItemSelected(MenuItem item) {
         displaySelectedScreen(item.getItemId());
         /* Handle navigation view item clicks here.
@@ -175,7 +245,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void displaySelectedScreen(int itemId) {
-
+        // TODO : Créer les appels de fragments
         //initializing the fragment object which is selected
         switch (itemId) {
             case R.id.nav_candidature:
