@@ -1,16 +1,14 @@
 package fr.utt.if26.projetx;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import com.robertlevonyan.views.chip.Chip;
+import com.robertlevonyan.views.chip.OnCloseClickListener;
 
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -29,6 +27,15 @@ public class ChipsAdapter extends RecyclerView.Adapter<ChipsAdapter.UeViewHolder
         public UeViewHolder(View view) {
             super(view);
             ue = view.findViewById(R.id.chip);
+            ue.setOnCloseClickListener(new OnCloseClickListener() {
+                @Override
+                public void onCloseClick(View v) {
+                    int position = ueList.indexOf(ue.getChipText());
+                    ueList.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, ueList.size());
+                }
+            });
         }
     }
 
