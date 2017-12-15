@@ -5,29 +5,31 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.GridLayout;
-import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 import fr.utt.if26.projetx.database.Filtre;
 
 public class FilterFragment extends Fragment {
 
+    EditText filterName;
     Button validate;
     RecyclerView recyclerView;
     ArrayList<String> UE = new ArrayList<>();
+    ArrayList<String> horairesNonVoulus = new ArrayList<>();
     GridLayout gridLayout;
 
     @Nullable
@@ -43,12 +45,16 @@ public class FilterFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("Filtres");
+        filterName = getActivity().findViewById(R.id.filter_name);
         validate = getActivity().findViewById(R.id.validate_filter);
         validate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Filtre filtre = new Filtre();
-                Toast.makeText(getContext(), "Filtre enregistré", Toast.LENGTH_LONG).show();
+                if(filterName.getText().toString().trim().length() > 0) {
+                    Filtre filtre = new Filtre(filterName.getText().toString(), UE, horairesNonVoulus);
+                    filtre.save();
+                    Toast.makeText(getContext(), "Filtre enregistré", Toast.LENGTH_LONG).show();
+                } else Toast.makeText(getContext(), "Veuillez donner un nom à votre filtre.", Toast.LENGTH_LONG).show();
             }
         });
         gridLayout = getActivity().findViewById(R.id.grid_horaires);
@@ -63,7 +69,7 @@ public class FilterFragment extends Fragment {
 
     public void populateHoraires() {
         String[] jours = {"Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
-        String[] horaires = {"8-10h", "10-12h", "12-14h", "14-16h", "16-18h", "18-20h"};
+        final String[] horaires = {"8-10h", "10-12h", "12-14h", "14-16h", "16-18h", "18-20h"};
         for (int i = 0; i < jours.length; i++) {
             TextView textView = new TextView(getContext());
             textView.setText(jours[i]);
@@ -96,7 +102,16 @@ public class FilterFragment extends Fragment {
 
         for (int r = 1; r < jours.length; r++)
             for (int c = 1; c < horaires.length + 1; c++) {
+                    final String horaireNonVoulu = jours[r-1] + "$" + horaires[c - 1];
                     CheckBox checkBox = new CheckBox(getContext());
+                    checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if(isChecked) horairesNonVoulus.add(horaireNonVoulu);
+                            else horairesNonVoulus.remove(horaireNonVoulu);
+                        }
+                    });
                     GridLayout.LayoutParams param = new GridLayout.LayoutParams();
                     param.height = GridLayout.LayoutParams.WRAP_CONTENT;
                     param.width = GridLayout.LayoutParams.WRAP_CONTENT;
@@ -110,7 +125,17 @@ public class FilterFragment extends Fragment {
             }
 
         for (int c = 1; c < 3; c++) {
+            final String horaireNonVoulu = jours[5] + "$" + horaires[c - 1];
             CheckBox checkBox = new CheckBox(getContext());
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked) horairesNonVoulus.add(horaireNonVoulu);
+                    else horairesNonVoulus.remove(horaireNonVoulu);
+
+                }
+            });
             GridLayout.LayoutParams param = new GridLayout.LayoutParams();
             param.height = GridLayout.LayoutParams.WRAP_CONTENT;
             param.width = GridLayout.LayoutParams.WRAP_CONTENT;

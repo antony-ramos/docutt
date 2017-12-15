@@ -27,13 +27,14 @@
                 android:textSize="18sp" />
 
             <EditText
-                android:id="@+id/editText4"
+                android:id="@+id/filter_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:textAlignment="textStart"
+                android:imeOptions="actionDone"
                 tools:text="@string/filter_name" />
         </LinearLayout>
 

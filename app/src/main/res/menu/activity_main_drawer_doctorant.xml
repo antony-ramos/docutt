@@ -13,33 +13,19 @@
             android:icon="@android:drawable/ic_menu_save"
             android:title="Mes candidatures" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/nav_filters"
+            android:icon="@android:drawable/ic_input_add"
+            android:title="Ajouter un filtre" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
             android:title="tutorial" />
     </group>
 
-    <item android:title="Liste des filtres">
+    <item
+        android:id="@+id/filter_list"
+        android:title="Liste des filtres">
         <menu>
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="TC" />
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="SRT" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="ISI" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="GM" />
         </menu>
     </item>
 

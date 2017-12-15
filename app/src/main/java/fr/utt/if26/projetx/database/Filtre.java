@@ -8,18 +8,35 @@ import java.util.ArrayList;
  * Created by Raphael on 14/12/2017.
  */
 
-public class Filter extends SugarRecord<java.util.logging.Filter> {
+public class Filtre extends SugarRecord {
 
     String name;
-    ArrayList<String> ueChoisies;
-    ArrayList<String> horairesNonVoulus;
+    String ueChoisies;
+    String horairesNonVoulus;
 
-    public Filter() {
+    public Filtre() {
     }
 
-    public Filter(String name, ArrayList<String> ueChoisies, ArrayList<String> horairesNonVoulus) {
+    public Filtre(String name, ArrayList<String> ueChoisies, ArrayList<String> horairesNonVoulus) {
         this.name = name;
-        this.ueChoisies = ueChoisies;
-        this.horairesNonVoulus = horairesNonVoulus;
+        this.ueChoisies = ueChoisies.toString();
+        this.horairesNonVoulus = horairesNonVoulus.toString();
+    }
+
+    public String getHorairesNonVoulus() {
+        return horairesNonVoulus;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getUeChoisies() {
+        return ueChoisies;
+    }
+
+    @Override
+    public String toString() {
+        return "nom: " + name + ", horairesNonVoulus: " + horairesNonVoulus + ", ue choisies: " + ueChoisies;
     }
 }
