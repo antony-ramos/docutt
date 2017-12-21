@@ -1,22 +1,18 @@
 package fr.utt.if26.projetx;
 
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.robertlevonyan.views.chip.Chip;
-import com.robertlevonyan.views.chip.OnCloseClickListener;
-
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 import fr.utt.if26.projetx.database.Filtre;
@@ -29,10 +25,14 @@ import fr.utt.if26.projetx.database.Filtre;
 public class ButtonAdapter extends BaseAdapter implements ListAdapter {
     private List<Filtre> list;
     private Context context;
+    private String from;
+    private String to;
 
-    public ButtonAdapter(List<Filtre> list, Context context) {
+    public ButtonAdapter(List<Filtre> list, Context context, String from, String to) {
         this.list = list;
         this.context = context;
+        this.from = from;
+        this.to = to;
     }
 
     @Override
@@ -67,9 +67,13 @@ public class ButtonAdapter extends BaseAdapter implements ListAdapter {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, "On devrait arriver sur une liste d'UE", Toast.LENGTH_LONG).show();
+                Bundle args = new Bundle();
+                args.putString("filterName", list.get(position).getName());
+                router.replaceFragment(from, to, args , context);
             }
         });
 
         return view;
     }
+
 }

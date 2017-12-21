@@ -13,13 +13,13 @@
             android:icon="@android:drawable/ic_menu_save"
             android:title="Mes candidatures" />
         <item
-            android:id="@+id/nav_filters"
+            android:id="@+id/nav_add_filter"
             android:icon="@android:drawable/ic_input_add"
             android:title="Ajouter un filtre" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_filters"
             android:icon="@drawable/ic_menu_manage"
-            android:title="tutorial" />
+            android:title="Mes filtres" />
     </group>
 
     <item

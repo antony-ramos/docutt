@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,8 @@ import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -29,6 +32,9 @@ public class FilterFragment extends Fragment {
     ArrayList<String> UE = new ArrayList<>();
     ArrayList<String> horairesNonVoulus = new ArrayList<>();
     GridLayout gridLayout;
+    Gson gson = new Gson();
+    boolean editing = false;
+    Filtre filtre = null;
 
     @Nullable
     @Override
@@ -49,9 +55,8 @@ public class FilterFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(filterName.getText().toString().trim().length() > 0) {
-                    Filtre filtre = new Filtre(filterName.getText().toString(), UE, horairesNonVoulus);
-                    filtre.save();
-                    Toast.makeText(getContext(), "Filtre enregistré", Toast.LENGTH_LONG).show();
+                    if(editing == true) editFilter();
+                    else createFilter();
                 } else Toast.makeText(getContext(), "Veuillez donner un nom à votre filtre.", Toast.LENGTH_LONG).show();
             }
         });
@@ -60,7 +65,8 @@ public class FilterFragment extends Fragment {
         recyclerView = getActivity().findViewById(R.id.ue_recycler);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this.getContext(), 4);
         recyclerView.setLayoutManager(layoutManager);
-        prepareListData();
+        if(getArguments().getString("filterName") != null) prepareFilter(getArguments().getString("filterName"));
+        else prepareListData();
         ChipsAdapter adapter = new ChipsAdapter(UE);
         recyclerView.setAdapter(adapter);
     }
@@ -156,5 +162,25 @@ public class FilterFragment extends Fragment {
         UE.add("CCCC");
         UE.add("DDDD");
         UE.add("FFFF");
+    }
+
+    private void prepareFilter(String name) {
+        editing = true;
+        filterName.setText(name);
+        filtre = Filtre.find(Filtre.class, "name = ?", name).get(0);
+        UE = gson.fromJson(filtre.getUeChoisies(), ArrayList.class);
+    }
+
+    private void createFilter() {
+        filtre = new Filtre(filterName.getText().toString(), gson.toJson(UE), gson.toJson(horairesNonVoulus));
+        filtre.save();
+        Toast.makeText(getContext(), "Filtre enregistré", Toast.LENGTH_LONG).show();
+    }
+
+    private void editFilter() {
+        filtre.setHorairesNonVoulus(gson.toJson(horairesNonVoulus));
+        filtre.setName(filterName.getText().toString());
+        filtre.setUeChoisies(gson.toJson(UE));
+        filtre.save();
     }
 }

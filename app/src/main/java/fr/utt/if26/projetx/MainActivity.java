@@ -249,23 +249,31 @@ public class MainActivity extends AppCompatActivity
     private void displaySelectedScreen(int itemId) {
         // TODO : Créer les appels de fragments
         //initializing the fragment object which is selected
+        Bundle args = new Bundle();
         switch (itemId) {
             case R.id.nav_candidature:
                 fragment = new Menu1();
+                args.putString("from", "nav_candidature");
                 break;
             case R.id.nav_camera:
-
                 break;
-            case R.id.nav_filters:
+            case R.id.nav_add_filter:
                 fragment = new FilterFragment();
+                args.putString("from", "nav_add_filter");
                 break;
             case R.id.nav_candidater:
                 fragment = new ChoiceFilterFragment();
+                args.putString("from", "nav_candidater");
+                break;
+            case R.id.nav_filters:
+                fragment = new ChoiceFilterFragment();
+                args.putString("from", "nav_filters");
                 break;
         }
 
         //replacing the fragment
         if (fragment != null) {
+            fragment.setArguments(args);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
             ft.addToBackStack(null);

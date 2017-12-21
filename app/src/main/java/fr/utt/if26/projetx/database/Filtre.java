@@ -10,17 +10,17 @@ import java.util.ArrayList;
 
 public class Filtre extends SugarRecord {
 
-    String name;
-    String ueChoisies;
-    String horairesNonVoulus;
+    private String name;
+    private String ueChoisies;
+    private String horairesNonVoulus;
 
     public Filtre() {
     }
 
-    public Filtre(String name, ArrayList<String> ueChoisies, ArrayList<String> horairesNonVoulus) {
+    public Filtre(String name, String ueChoisies, String horairesNonVoulus) {
         this.name = name;
-        this.ueChoisies = ueChoisies.toString();
-        this.horairesNonVoulus = horairesNonVoulus.toString();
+        this.ueChoisies = ueChoisies;
+        this.horairesNonVoulus = horairesNonVoulus;
     }
 
     public String getHorairesNonVoulus() {
@@ -33,6 +33,18 @@ public class Filtre extends SugarRecord {
 
     public String getUeChoisies() {
         return ueChoisies;
+    }
+
+    public void setHorairesNonVoulus(String horairesNonVoulus) {
+        this.horairesNonVoulus = horairesNonVoulus;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setUeChoisies(String ueChoisies) {
+        this.ueChoisies = ueChoisies;
     }
 
     @Override
