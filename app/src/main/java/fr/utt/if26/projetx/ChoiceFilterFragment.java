@@ -14,8 +14,8 @@ import fr.utt.if26.projetx.database.Filtre;
 
 public class ChoiceFilterFragment extends Fragment {
 
-    List<Filtre> filtres;
-    ListView listView;
+    private List<Filtre> filtres;
+    private ListView listView;
 
     @Nullable
     @Override
@@ -37,12 +37,10 @@ public class ChoiceFilterFragment extends Fragment {
 
     private String chooseRedirection() {
         switch (getArguments().getString("from")){
-            case "nav_filters":
-                return "FilterFragment";
             case "nav_candidater":
                 return "CandidateFragment";
             default:
-                return "";
+                return "FilterFragment";
         }
     }
 

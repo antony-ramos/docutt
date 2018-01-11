@@ -21,20 +21,26 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import fr.utt.if26.projetx.database.Filtre;
 
 public class FilterFragment extends Fragment {
 
-    EditText filterName;
-    Button validate;
-    RecyclerView recyclerView;
-    ArrayList<String> UE = new ArrayList<>();
-    ArrayList<String> horairesNonVoulus = new ArrayList<>();
-    GridLayout gridLayout;
-    Gson gson = new Gson();
-    boolean editing = false;
-    Filtre filtre = null;
+    private EditText filterName;
+    private Button validate;
+    private RecyclerView recyclerView;
+    private GridLayout gridLayout;
+
+    private ArrayList<String> UE = new ArrayList<>();
+    private HashMap<String, ArrayList<String>> horairesNonVoulus = new HashMap<>();
+
+    public final String[] jours = {"Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
+    public final String[] horaires = {"8-10h", "10-12h", "12-14h", "14-16h", "16-18h", "18-20h"};
+
+    private Gson gson = new Gson();
+    private boolean editing = false;
+    private Filtre filtre = null;
 
     @Nullable
     @Override
@@ -54,27 +60,28 @@ public class FilterFragment extends Fragment {
         validate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(filterName.getText().toString().trim().length() > 0) {
-                    if(editing == true) editFilter();
+                if (filterName.getText().toString().trim().length() > 0) {
+                    if (editing == true) editFilter();
                     else createFilter();
-                } else Toast.makeText(getContext(), "Veuillez donner un nom à votre filtre.", Toast.LENGTH_LONG).show();
+                } else
+                    Toast.makeText(getContext(), "Veuillez donner un nom à votre filtre.", Toast.LENGTH_LONG).show();
             }
         });
         gridLayout = getActivity().findViewById(R.id.grid_horaires);
-        populateHoraires();
         recyclerView = getActivity().findViewById(R.id.ue_recycler);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this.getContext(), 4);
         recyclerView.setLayoutManager(layoutManager);
-        if(getArguments().getString("filterName") != null) prepareFilter(getArguments().getString("filterName"));
+        if (getArguments().getString("filterName") != null)
+            prepareFilter(getArguments().getString("filterName"));
         else prepareListData();
+        populateHoraires();
         ChipsAdapter adapter = new ChipsAdapter(UE);
         recyclerView.setAdapter(adapter);
     }
 
     public void populateHoraires() {
-        String[] jours = {"Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
-        final String[] horaires = {"8-10h", "10-12h", "12-14h", "14-16h", "16-18h", "18-20h"};
         for (int i = 0; i < jours.length; i++) {
+            if(horairesNonVoulus.isEmpty()) horairesNonVoulus.put(jours[i], new ArrayList<String>());
             TextView textView = new TextView(getContext());
             textView.setText(jours[i]);
             GridLayout.LayoutParams param = new GridLayout.LayoutParams();
@@ -106,37 +113,40 @@ public class FilterFragment extends Fragment {
 
         for (int r = 1; r < jours.length; r++)
             for (int c = 1; c < horaires.length + 1; c++) {
-                    final String horaireNonVoulu = jours[r-1] + "$" + horaires[c - 1];
-                    CheckBox checkBox = new CheckBox(getContext());
-                    checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                final String jourNonVoulu = jours[r - 1];
+                final String horaireNonVoulu = horaires[c - 1];
+                CheckBox checkBox = new CheckBox(getContext());
+                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            if(isChecked) horairesNonVoulus.add(horaireNonVoulu);
-                            else horairesNonVoulus.remove(horaireNonVoulu);
-                        }
-                    });
-                    GridLayout.LayoutParams param = new GridLayout.LayoutParams();
-                    param.height = GridLayout.LayoutParams.WRAP_CONTENT;
-                    param.width = GridLayout.LayoutParams.WRAP_CONTENT;
-                    param.rightMargin = 5;
-                    param.topMargin = 5;
-                    param.setGravity(Gravity.CENTER);
-                    param.columnSpec = GridLayout.spec(c);
-                    param.rowSpec = GridLayout.spec(r);
-                    checkBox.setLayoutParams(param);
-                    gridLayout.addView(checkBox);
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked) horairesNonVoulus.get(jourNonVoulu).add(horaireNonVoulu);
+                        else horairesNonVoulus.get(jourNonVoulu).remove(horaireNonVoulu);
+                    }
+                });
+                GridLayout.LayoutParams param = new GridLayout.LayoutParams();
+                param.height = GridLayout.LayoutParams.WRAP_CONTENT;
+                param.width = GridLayout.LayoutParams.WRAP_CONTENT;
+                param.rightMargin = 5;
+                param.topMargin = 5;
+                param.setGravity(Gravity.CENTER);
+                param.columnSpec = GridLayout.spec(c);
+                param.rowSpec = GridLayout.spec(r);
+                checkBox.setLayoutParams(param);
+                if(horairesNonVoulus.get(jourNonVoulu).contains(horaireNonVoulu)) checkBox.setChecked(true);
+                gridLayout.addView(checkBox);
             }
 
         for (int c = 1; c < 3; c++) {
-            final String horaireNonVoulu = jours[5] + "$" + horaires[c - 1];
+            final String jourNonVoulu = jours[5];
+            final String horaireNonVoulu = horaires[c - 1];
             CheckBox checkBox = new CheckBox(getContext());
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if(isChecked) horairesNonVoulus.add(horaireNonVoulu);
-                    else horairesNonVoulus.remove(horaireNonVoulu);
+                    if (isChecked) horairesNonVoulus.get(jourNonVoulu).add(horaireNonVoulu);
+                    else horairesNonVoulus.get(jourNonVoulu).remove(horaireNonVoulu);
 
                 }
             });
@@ -149,6 +159,7 @@ public class FilterFragment extends Fragment {
             param.columnSpec = GridLayout.spec(c);
             param.rowSpec = GridLayout.spec(6);
             checkBox.setLayoutParams(param);
+            if(horairesNonVoulus.get(jourNonVoulu).contains(horaireNonVoulu)) checkBox.setChecked(true);
             gridLayout.addView(checkBox);
         }
     }
@@ -169,12 +180,14 @@ public class FilterFragment extends Fragment {
         filterName.setText(name);
         filtre = Filtre.find(Filtre.class, "name = ?", name).get(0);
         UE = gson.fromJson(filtre.getUeChoisies(), ArrayList.class);
+        horairesNonVoulus = gson.fromJson(filtre.getHorairesNonVoulus(), horairesNonVoulus.getClass());
     }
 
     private void createFilter() {
         filtre = new Filtre(filterName.getText().toString(), gson.toJson(UE), gson.toJson(horairesNonVoulus));
         filtre.save();
         Toast.makeText(getContext(), "Filtre enregistré", Toast.LENGTH_LONG).show();
+        Router.replaceFragment("FilterFragment", "ChoiceFilterFragment", null, getContext());
     }
 
     private void editFilter() {

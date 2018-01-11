@@ -1,10 +1,7 @@
 package fr.utt.if26.projetx;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,7 +66,7 @@ public class ButtonAdapter extends BaseAdapter implements ListAdapter {
                 Toast.makeText(context, "On devrait arriver sur une liste d'UE", Toast.LENGTH_LONG).show();
                 Bundle args = new Bundle();
                 args.putString("filterName", list.get(position).getName());
-                router.replaceFragment(from, to, args , context);
+                Router.replaceFragment(from, to, args , context);
             }
         });
 

@@ -10,7 +10,7 @@ import android.support.v4.app.FragmentTransaction;
  * Created by Raphael on 21/12/2017.
  */
 
-public class router {
+public class Router {
 
     public static void replaceFragment(String from, String to, Bundle args, Context context) {
         Fragment fragment = null;
@@ -20,6 +20,12 @@ public class router {
                 break;
             case "CandidateFragment":
                 fragment = new FilterFragment();
+                break;
+            case "ChoiceFilterFragment":
+                fragment = new ChoiceFilterFragment();
+                break;
+            default:
+                fragment = new MainContent();
                 break;
         }
         if(args == null) args = new Bundle();
