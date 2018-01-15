@@ -255,8 +255,6 @@ public class MainActivity extends AppCompatActivity
                 fragment = new Menu1();
                 args.putString("from", "nav_candidature");
                 break;
-            case R.id.nav_camera:
-                break;
             case R.id.nav_add_filter:
                 fragment = new FilterFragment();
                 args.putString("from", "nav_add_filter");
@@ -267,6 +265,10 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_filters:
                 fragment = new ChoiceFilterFragment();
+                args.putString("from", "nav_filters");
+                break;
+            case R.id.nav_ajouter_ue:
+                fragment = new AjouterUeFragment();
                 args.putString("from", "nav_filters");
                 break;
         }

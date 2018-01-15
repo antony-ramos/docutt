@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,10 +32,11 @@ public class FilterFragment extends Fragment {
     private GridLayout gridLayout;
 
     private ArrayList<String> UE = new ArrayList<>();
-    private HashMap<String, ArrayList<String>> horairesNonVoulus = new HashMap<>();
+    private HashMap<String, ArrayList<Integer>> horairesNonVoulus = new HashMap<>();
 
     public final String[] jours = {"Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
     public final String[] horaires = {"8-10h", "10-12h", "12-14h", "14-16h", "16-18h", "18-20h"};
+    public final Integer[] heureDebut = {8, 10, 12, 14, 16, 18};
 
     private Gson gson = new Gson();
     private boolean editing = false;
@@ -80,8 +80,11 @@ public class FilterFragment extends Fragment {
     }
 
     public void populateHoraires() {
+        if (horairesNonVoulus.isEmpty())
+            for (int i = 0; i < jours.length; i++)
+                horairesNonVoulus.put(jours[i], new ArrayList<Integer>());
+
         for (int i = 0; i < jours.length; i++) {
-            if(horairesNonVoulus.isEmpty()) horairesNonVoulus.put(jours[i], new ArrayList<String>());
             TextView textView = new TextView(getContext());
             textView.setText(jours[i]);
             GridLayout.LayoutParams param = new GridLayout.LayoutParams();
@@ -114,14 +117,14 @@ public class FilterFragment extends Fragment {
         for (int r = 1; r < jours.length; r++)
             for (int c = 1; c < horaires.length + 1; c++) {
                 final String jourNonVoulu = jours[r - 1];
-                final String horaireNonVoulu = horaires[c - 1];
+                final Integer heureDebutNonVoulue = heureDebut[c - 1];
                 CheckBox checkBox = new CheckBox(getContext());
                 checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked) horairesNonVoulus.get(jourNonVoulu).add(horaireNonVoulu);
-                        else horairesNonVoulus.get(jourNonVoulu).remove(horaireNonVoulu);
+                        if (isChecked) horairesNonVoulus.get(jourNonVoulu).add(heureDebutNonVoulue);
+                        else horairesNonVoulus.get(jourNonVoulu).remove(heureDebutNonVoulue);
                     }
                 });
                 GridLayout.LayoutParams param = new GridLayout.LayoutParams();
@@ -133,20 +136,21 @@ public class FilterFragment extends Fragment {
                 param.columnSpec = GridLayout.spec(c);
                 param.rowSpec = GridLayout.spec(r);
                 checkBox.setLayoutParams(param);
-                if(horairesNonVoulus.get(jourNonVoulu).contains(horaireNonVoulu)) checkBox.setChecked(true);
+                if (horairesNonVoulus.get(jourNonVoulu).contains(heureDebutNonVoulue))
+                    checkBox.setChecked(true);
                 gridLayout.addView(checkBox);
             }
 
         for (int c = 1; c < 3; c++) {
             final String jourNonVoulu = jours[5];
-            final String horaireNonVoulu = horaires[c - 1];
+            final Integer heureDebutNonVoulue = heureDebut[c - 1];
             CheckBox checkBox = new CheckBox(getContext());
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) horairesNonVoulus.get(jourNonVoulu).add(horaireNonVoulu);
-                    else horairesNonVoulus.get(jourNonVoulu).remove(horaireNonVoulu);
+                    if (isChecked) horairesNonVoulus.get(jourNonVoulu).add(heureDebutNonVoulue);
+                    else horairesNonVoulus.get(jourNonVoulu).remove(heureDebutNonVoulue);
 
                 }
             });
@@ -159,7 +163,8 @@ public class FilterFragment extends Fragment {
             param.columnSpec = GridLayout.spec(c);
             param.rowSpec = GridLayout.spec(6);
             checkBox.setLayoutParams(param);
-            if(horairesNonVoulus.get(jourNonVoulu).contains(horaireNonVoulu)) checkBox.setChecked(true);
+            if (horairesNonVoulus.get(jourNonVoulu).contains(heureDebutNonVoulue))
+                checkBox.setChecked(true);
             gridLayout.addView(checkBox);
         }
     }
@@ -180,7 +185,13 @@ public class FilterFragment extends Fragment {
         filterName.setText(name);
         filtre = Filtre.find(Filtre.class, "name = ?", name).get(0);
         UE = gson.fromJson(filtre.getUeChoisies(), ArrayList.class);
-        horairesNonVoulus = gson.fromJson(filtre.getHorairesNonVoulus(), horairesNonVoulus.getClass());
+        final HashMap<String, ArrayList<Double>> horairesNonVoulusFromJson = gson.fromJson(filtre.getHorairesNonVoulus(), horairesNonVoulus.getClass());
+
+        for (int i = 0; i < jours.length; i++) {
+            horairesNonVoulus.put(jours[i], new ArrayList<Integer>());
+            for (int j = 0; j < horairesNonVoulusFromJson.get(jours[i]).size(); j++)
+                horairesNonVoulus.get(jours[i]).add(horairesNonVoulusFromJson.get(jours[i]).get(j).intValue());
+        }
     }
 
     private void createFilter() {

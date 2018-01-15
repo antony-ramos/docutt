@@ -58,4 +58,5 @@
     <string name="filter_vendredi">Vendredi</string>
     <string name="filter_samedi">Samedi</string>
     <string name="filter_horaires">Cochez les horaires non voulus:</string>
+    <string name="ue_name">Nom de l\'UE</string>
 </resources>
