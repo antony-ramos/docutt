@@ -19,7 +19,7 @@ public class Router {
                 fragment = new FilterFragment();
                 break;
             case "CandidateFragment":
-                fragment = new FilterFragment();
+                fragment = new CandidateFragment();
                 break;
             case "ChoiceFilterFragment":
                 fragment = new ChoiceFilterFragment();
