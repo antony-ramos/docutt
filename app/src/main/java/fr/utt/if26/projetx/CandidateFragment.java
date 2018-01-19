@@ -106,6 +106,7 @@ public class CandidateFragment extends Fragment {
                             err.printStackTrace();
                         }
                     }
+                    Log.d("coucou", "onSuccess: " + creneaux);
                 }
             });
         } catch (UnsupportedEncodingException err) {
