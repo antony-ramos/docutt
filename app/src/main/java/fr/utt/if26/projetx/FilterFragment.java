@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import fr.utt.if26.projetx.database.Filtre;
+import fr.utt.if26.projetx.utils.Router;
 
 public class FilterFragment extends Fragment {
 

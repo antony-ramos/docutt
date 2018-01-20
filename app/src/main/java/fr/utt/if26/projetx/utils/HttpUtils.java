@@ -1,14 +1,12 @@
-package fr.utt.if26.projetx;
+package fr.utt.if26.projetx.utils;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GetTokenResult;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -42,7 +40,6 @@ public class HttpUtils {
         task.addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
             @Override
             public void onComplete(@NonNull Task<GetTokenResult> task) {
-                Log.d("coucou", task.getResult().getToken());
                 client.addHeader("Authorization", task.getResult().getToken());
                 client.post(context, getAbsoluteUrl(url), headers, entity, "application/json", responseHandler);
             }

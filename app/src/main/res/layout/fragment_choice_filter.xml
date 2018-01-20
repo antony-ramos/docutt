@@ -5,17 +5,19 @@
     android:orientation="vertical"
     tools:context="fr.utt.if26.projetx.FilterFragment">
 
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Choisissez un filtre"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choisissez un filtre"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
 
     <ListView
         android:id="@+id/choice_filter"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical" />
+
 </LinearLayout>

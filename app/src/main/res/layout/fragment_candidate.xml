@@ -1,9 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical"
-tools:context="fr.utt.if26.projetx.CandidateFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="fr.utt.if26.projetx.CandidateFragment">
 
     <Button
         android:id="@+id/btn_candidater"
@@ -15,20 +15,15 @@ tools:context="fr.utt.if26.projetx.CandidateFragment">
         android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choisissez un fragment"
+        android:text="Choisissez un filtre"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="18sp" />
 
-    <ScrollView
+    <ListView
+        android:id="@+id/creneau_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ListView
-            android:id="@+id/creneau_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-        </ListView>
-    </ScrollView>
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
 
 </LinearLayout>

@@ -1,10 +1,16 @@
-package fr.utt.if26.projetx;
+package fr.utt.if26.projetx.utils;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+
+import fr.utt.if26.projetx.CandidateFragment;
+import fr.utt.if26.projetx.ChoiceFilterFragment;
+import fr.utt.if26.projetx.FilterFragment;
+import fr.utt.if26.projetx.MainContent;
+import fr.utt.if26.projetx.R;
 
 /**
  * Created by Raphael on 21/12/2017.

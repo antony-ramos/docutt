@@ -1,5 +1,6 @@
 package fr.utt.if26.projetx;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,12 +8,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,25 +24,24 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import fr.utt.if26.projetx.database.Filtre;
+import fr.utt.if26.projetx.utils.HttpUtils;
 
 public class CandidateFragment extends Fragment {
 
     private ListView creneauList;
     private Button btnCandidater;
-    private String name = null;
 
     private ArrayList<String> UE = new ArrayList<>();
     private HashMap<String, ArrayList<Integer>> horairesNonVoulus = new HashMap<>();
-    private ArrayList<Map<String, Object>> creneaux = new ArrayList<>();
+    private ArrayList<HashMap<String, Object>> creneaux = new ArrayList<>();
 
-    private boolean charged = false;
+    private ArrayList<Integer> idsCreneaux = new ArrayList<>();
+
 
     private Gson gson = new Gson();
 
@@ -54,16 +57,21 @@ public class CandidateFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
-        getActivity().setTitle("Candidate");
+        getActivity().setTitle("Candidater");
         creneauList = getActivity().findViewById(R.id.creneau_list);
         btnCandidater = getActivity().findViewById(R.id.btn_candidater);
+        btnCandidater.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                candidater();
+            }
+        });
         prepareFilter();
         getCreneauFromFilter();
     }
 
     private void prepareFilter() {
-        name = getArguments().getString("filterName");
-        Filtre filtre = Filtre.find(Filtre.class, "name = ?", name).get(0);
+        Filtre filtre = Filtre.find(Filtre.class, "name = ?", getArguments().getString("filterName")).get(0);
         UE = gson.fromJson(filtre.getUeChoisies(), ArrayList.class);
         final HashMap<String, ArrayList<Double>> horairesNonVoulusFromJson = gson.fromJson(filtre.getHorairesNonVoulus(), horairesNonVoulus.getClass());
 
@@ -86,7 +94,6 @@ public class CandidateFragment extends Fragment {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     // If the response is JSONObject instead of expected JSONArray
-                    // If the response is JSONObject instead of expected JSONArray
                     Log.d("object", response.toString());
                 }
 
@@ -95,7 +102,7 @@ public class CandidateFragment extends Fragment {
                     // If the response is JSONObject instead of expected JSONArray
                     for (int i = 0; i < response.length(); i++) {
                         try {
-                            Map<String, Object> creneau = new HashMap();
+                            HashMap<String, Object> creneau = new HashMap();
                             creneau.put("id", response.getJSONObject(i).getInt("id"));
                             creneau.put("date", response.getJSONObject(i).getString("date"));
                             creneau.put("heure_debut", response.getJSONObject(i).getInt("heure_debut"));
@@ -106,7 +113,7 @@ public class CandidateFragment extends Fragment {
                             err.printStackTrace();
                         }
                     }
-                    Log.d("coucou", "onSuccess: " + creneaux);
+                    populateCreneau();
                 }
             });
         } catch (UnsupportedEncodingException err) {
@@ -114,4 +121,85 @@ public class CandidateFragment extends Fragment {
         }
 
     }
+
+    private void populateCreneau() {
+        creneauList.setAdapter(new CheckboxAdapter(creneaux, getContext()));
+    }
+
+    private void candidater() {
+        HashMap candidatures = new HashMap();
+        candidatures.put("creneaux", idsCreneaux);
+        String json = gson.toJson(candidatures);
+        try {
+            StringEntity entity = new StringEntity(json);
+            HttpUtils.post(getContext(), "creneau/candidate", null, entity, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    // If the response is JSONObject instead of expected JSONArray
+                    Toast.makeText(getContext(), "Vous avez bien candidaté à ces creneaux.", Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                    // If the response is JSONObject instead of expected JSONArray
+                    Toast.makeText(getContext(), "Vous avez bien candidaté à ces creneaux.", Toast.LENGTH_LONG).show();
+                }
+            });
+        } catch (UnsupportedEncodingException err) {
+            err.printStackTrace();
+        }
+    }
+
+    private class CheckboxAdapter extends BaseAdapter implements ListAdapter {
+        private ArrayList<HashMap<String, Object>> creneaux;
+        private Context context;
+
+        public CheckboxAdapter(ArrayList<HashMap<String, Object>> creneaux, Context context) {
+            this.creneaux = creneaux;
+            this.context = context;
+        }
+
+        @Override
+        public int getCount() {
+            return creneaux.size();
+        }
+
+        @Override
+        public Object getItem(int pos) {
+            return creneaux.get(pos);
+        }
+
+        @Override
+        public long getItemId(int pos) {
+            return 0;
+            //just return 0 if your list items do not have an Id variable.
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View view = convertView;
+            if (view == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(R.layout.list_creneau, null);
+            }
+
+            CheckBox checkbox = view.findViewById(R.id.checkbox_creneau);
+            String ueName = (String)creneaux.get(position).get("ue");
+            String date = (String)creneaux.get(position).get("date");
+            int heure_debut = (int)creneaux.get(position).get("heure_debut");
+            int heure_fin = (int)creneaux.get(position).get("heure_debut") + (int)creneaux.get(position).get("duree");
+            String texte = ueName + ": " + date + " - " + heure_debut + "h - " + heure_fin + "h";
+            checkbox.setText(texte);
+            checkbox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    idsCreneaux.add((Integer)creneaux.get(position).get("id"));
+                }
+            });
+
+            return view;
+        }
+
+    }
+
 }
