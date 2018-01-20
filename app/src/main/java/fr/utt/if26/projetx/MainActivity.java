@@ -12,10 +12,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,11 +27,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Iterator;
-import java.util.List;
-
-import fr.utt.if26.projetx.database.Filtre;
-
 // TODO : Mettre en place un système de notifications
 
 public class MainActivity extends AppCompatActivity
@@ -46,14 +39,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        //FloatingActionButton fab = findViewById(R.id.fab);
-        //fab.setOnClickListener(new View.OnClickListener() {
-        //    @Override
-        //    public void onClick(View view) {
-        //        sendEmail();
-        //    }
-        //});
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -74,8 +59,6 @@ public class MainActivity extends AppCompatActivity
         // Générer le bon menu de navigation latéral suivant l'information
 
         final NavigationView navigationView = findViewById(R.id.nav_view);
-
-        // TODO : Gestion du menu selon le type d'utilisateur (Créer dans la db auth le type, le récupérer puis vérifier dans une fonction)
 
         ValueEventListener typeListener = new ValueEventListener() {
             @Override
@@ -162,24 +145,10 @@ public class MainActivity extends AppCompatActivity
         if (type == 1) {
             navigationView.inflateMenu(R.menu.activity_main_drawer_doctorant);
         } else if (type == 2) {
-            navigationView.inflateMenu(R.menu.activity_main_drawer_doctorant);
+            navigationView.inflateMenu(R.menu.activity_main_drawer_administration);
         } else {
-            navigationView.inflateMenu(R.menu.activity_main_drawer_doctorant);
+            navigationView.inflateMenu(R.menu.activity_main_drawer_professeur);
         }
-    }
-
-    public void sendEmail(){
-        Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-        String aEmailList[] = { "user@fakehost.com","user2@fakehost.com" };
-        String aEmailCCList[] = { "user3@fakehost.com","user4@fakehost.com"};
-        String aEmailBCCList[] = { "user5@fakehost.com" };
-        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, aEmailList);
-        emailIntent.putExtra(android.content.Intent.EXTRA_CC, aEmailCCList);
-        emailIntent.putExtra(android.content.Intent.EXTRA_BCC, aEmailBCCList);
-        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "My subject");
-        emailIntent.setType("plain/text");
-        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "My message body.");
-        startActivity(emailIntent);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

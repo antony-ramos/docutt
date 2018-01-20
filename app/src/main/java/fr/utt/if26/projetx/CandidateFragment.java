@@ -76,7 +76,7 @@ public class CandidateFragment extends Fragment {
         UE = gson.fromJson(filtre.getUeChoisies(), ArrayList.class);
         final HashMap<String, ArrayList<Double>> horairesNonVoulusFromJson = gson.fromJson(filtre.getHorairesNonVoulus(), horairesNonVoulus.getClass());
 
-        final String[] jours = {"Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
+        final String[] jours = {"lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"};
         for (int i = 0; i < jours.length; i++) {
             horairesNonVoulus.put(jours[i], new ArrayList<Integer>());
             for (int j = 0; j < horairesNonVoulusFromJson.get(jours[i]).size(); j++)
@@ -89,6 +89,7 @@ public class CandidateFragment extends Fragment {
         filtre.put("ue", UE);
         filtre.put("horairesNonVoulus", horairesNonVoulus);
         String json = gson.toJson(filtre);
+        Log.d("json", json);
         try {
             StringEntity entity = new StringEntity(json);
             HttpUtils.post(getContext(), "creneau/filtre", null, entity, new JsonHttpResponseHandler() {

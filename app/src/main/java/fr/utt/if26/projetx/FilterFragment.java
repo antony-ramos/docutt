@@ -35,7 +35,7 @@ public class FilterFragment extends Fragment {
     private ArrayList<String> UE = new ArrayList<>();
     private HashMap<String, ArrayList<Integer>> horairesNonVoulus = new HashMap<>();
 
-    public final String[] jours = {"Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
+    public final String[] jours = {"lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"};
     public final String[] horaires = {"8-10h", "10-12h", "12-14h", "14-16h", "16-18h", "18-20h"};
     public final Integer[] heureDebut = {8, 10, 12, 14, 16, 18};
 
@@ -207,5 +207,6 @@ public class FilterFragment extends Fragment {
         filtre.setName(filterName.getText().toString());
         filtre.setUeChoisies(gson.toJson(UE));
         filtre.save();
+        Toast.makeText(getContext(), "Filtre édité", Toast.LENGTH_LONG).show();
     }
 }

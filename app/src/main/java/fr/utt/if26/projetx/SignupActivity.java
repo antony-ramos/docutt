@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,10 +21,22 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
+import fr.utt.if26.projetx.utils.HttpUtils;
 
 public class SignupActivity extends AppCompatActivity {
 
-    int type = 0;
+    int type = 1;
     private EditText inputEmail, inputPassword, inputName, inputSurname;
     private Button btnSignIn, btnSignUp, btnResetPassword;
     private ProgressBar progressBar;
@@ -150,17 +163,17 @@ public class SignupActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (labo == "Doctorants") {
-                    type = 1;
+                switch (statut) {
+                    case "Doctorant":
+                        type = 1;
+                        break;
+                    case "Administration":
+                        type = 2;
+                        break;
+                    case "Enseignant-Chercheur":
+                        type = 3;
+                        break;
                 }
-                if (labo == "Administration") {
-                    type = 2;
-                }
-                if (labo == "Enseignant-Chercheur") {
-                    type = 3;
-                }
-
-
 
                 progressBar.setVisibility(View.VISIBLE);
                 //create user
@@ -183,6 +196,7 @@ public class SignupActivity extends AppCompatActivity {
                                 // prenom mDatabase.child("users").child(userId).setValue(user);
 
                                 // fin des commentaires
+                                createUserOnBackend(FirebaseAuth.getInstance().getCurrentUser().getUid(), name, surname, email, type);
 
                                 Toast.makeText(SignupActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.GONE);
@@ -201,6 +215,35 @@ public class SignupActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void createUserOnBackend(String id, String name, String firstname, String email, int role) {
+        Gson gson = new Gson();
+        HashMap user = new HashMap();
+        user.put("id", id);
+        user.put("nom", name);
+        user.put("prenom", firstname);
+        user.put("email", email);
+        user.put("role", role);
+        String json = gson.toJson(user);
+        try {
+            StringEntity entity = new StringEntity(json);
+            HttpUtils.postWithoutAuthorization(getApplicationContext(), "utilisateurs", null, entity, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    // If the response is JSONObject instead of expected JSONArray
+                    Log.d("response", response.toString());
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                    // If the response is JSONObject instead of expected JSONArray
+                    Log.d("response", response.toString());
+                }
+            });
+        } catch (UnsupportedEncodingException err) {
+            err.printStackTrace();
+        }
     }
 
     @Override

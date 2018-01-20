@@ -46,6 +46,12 @@ public class HttpUtils {
         });
     }
 
+    public static void postWithoutAuthorization(final Context context, final String url, final Header[] headers, final HttpEntity entity,
+                                                final ResponseHandlerInterface responseHandler) {
+        client.removeAllHeaders();
+        client.post(context, getAbsoluteUrl(url), headers, entity, "application/json", responseHandler);
+    }
+
     private static String getAbsoluteUrl(String relativeUrl) {
         return BASE_URL + relativeUrl;
     }
