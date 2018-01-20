@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="fr.utt.if26.projetx.ChoiceCandidatureTypeFragment">
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choisissez un type de candidature à consulter"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/candidature_type_todo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pas encore validées" />
+
+    <Button
+        android:id="@+id/candidature_type_validate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Validées par un professeur" />
+
+    <Button
+        android:id="@+id/candidature_type_done"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Déjà effectuées" />
+</LinearLayout>

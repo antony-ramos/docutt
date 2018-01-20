@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity
         Bundle args = new Bundle();
         switch (itemId) {
             case R.id.nav_candidature:
-                fragment = new Menu1();
+                fragment = new ChoiceCandidatureTypeFragment();
                 args.putString("from", "nav_candidature");
                 break;
             case R.id.nav_add_filter:

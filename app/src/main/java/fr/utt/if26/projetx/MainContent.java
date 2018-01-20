@@ -19,8 +19,6 @@ import java.util.List;
 
 public class MainContent extends Fragment {
 
-
-    ExpandableListCandidaturesAdapter listAdapter;
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;

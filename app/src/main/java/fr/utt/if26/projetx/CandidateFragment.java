@@ -36,12 +36,13 @@ public class CandidateFragment extends Fragment {
     private ListView creneauList;
     private Button btnCandidater;
 
+    private CheckboxAdapter adapter;
+
     private ArrayList<String> UE = new ArrayList<>();
     private HashMap<String, ArrayList<Integer>> horairesNonVoulus = new HashMap<>();
     private ArrayList<HashMap<String, Object>> creneaux = new ArrayList<>();
 
     private ArrayList<Integer> idsCreneaux = new ArrayList<>();
-
 
     private Gson gson = new Gson();
 
@@ -123,7 +124,16 @@ public class CandidateFragment extends Fragment {
     }
 
     private void populateCreneau() {
-        creneauList.setAdapter(new CheckboxAdapter(creneaux, getContext()));
+        adapter = new CheckboxAdapter(creneaux, getContext());
+        creneauList.setAdapter(adapter);
+    }
+
+
+    private void refresh() {
+        creneaux = new ArrayList<>();
+        idsCreneaux = new ArrayList<>();
+        getCreneauFromFilter();
+        adapter.notifyDataSetChanged();
     }
 
     private void candidater() {
@@ -137,12 +147,14 @@ public class CandidateFragment extends Fragment {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     // If the response is JSONObject instead of expected JSONArray
                     Toast.makeText(getContext(), "Vous avez bien candidaté à ces creneaux.", Toast.LENGTH_LONG).show();
+                    refresh();
                 }
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                     // If the response is JSONObject instead of expected JSONArray
                     Toast.makeText(getContext(), "Vous avez bien candidaté à ces creneaux.", Toast.LENGTH_LONG).show();
+                    refresh();
                 }
             });
         } catch (UnsupportedEncodingException err) {

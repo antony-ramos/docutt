@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 
 import fr.utt.if26.projetx.CandidateFragment;
+import fr.utt.if26.projetx.CandidaturesFragment;
+import fr.utt.if26.projetx.ChoiceCandidatureTypeFragment;
 import fr.utt.if26.projetx.ChoiceFilterFragment;
 import fr.utt.if26.projetx.FilterFragment;
 import fr.utt.if26.projetx.MainContent;
@@ -29,6 +31,12 @@ public class Router {
                 break;
             case "ChoiceFilterFragment":
                 fragment = new ChoiceFilterFragment();
+                break;
+            case "ChoiceCandidatureTypeFragment":
+                fragment = new ChoiceCandidatureTypeFragment();
+                break;
+            case "CandidaturesFragment":
+                fragment = new CandidaturesFragment();
                 break;
             default:
                 fragment = new MainContent();

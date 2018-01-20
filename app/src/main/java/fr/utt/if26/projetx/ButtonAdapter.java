@@ -64,7 +64,6 @@ public class ButtonAdapter extends BaseAdapter implements ListAdapter {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "On devrait arriver sur une liste d'UE", Toast.LENGTH_LONG).show();
                 Bundle args = new Bundle();
                 args.putString("filterName", list.get(position).getName());
                 Router.replaceFragment(from, to, args , context);
