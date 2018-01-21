@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -28,8 +30,9 @@ import fr.utt.if26.projetx.utils.HttpUtils;
 
 public class CandidaturesFragment extends Fragment {
 
-    ListView candidaturesList;
-    ArrayList<String> candidatures = new ArrayList<>();
+    private ListView candidaturesList;
+    private ArrayList<String> candidaturesFormatees = new ArrayList<>();
+    private ArrayList<HashMap<String, Object>> candidatures = new ArrayList<>();
 
     @Nullable
     @Override
@@ -77,7 +80,11 @@ public class CandidaturesFragment extends Fragment {
                         String date = response.getJSONObject(i).getJSONObject("creneau").getString("date");
                         int heure_debut = response.getJSONObject(i).getJSONObject("creneau").getInt("heure_debut");
                         int heure_fin = heure_debut + response.getJSONObject(i).getJSONObject("creneau").getInt("duree");
-                        candidatures.add(ue + ": " + date + " - " + heure_debut + "h - " + heure_fin + "h");
+                        candidaturesFormatees.add(ue + ": " + date + " - " + heure_debut + "h - " + heure_fin + "h");
+                        HashMap<String, Object> candidature = new HashMap<>();
+                        candidature.put("id", response.getJSONObject(i).getInt("id"));
+                        candidature.put("candidature", ue + ": " + date + " - " + heure_debut + "h - " + heure_fin + "h");
+                        candidatures.add(candidature);
                     } catch (JSONException err) {
                         err.printStackTrace();
                     }
@@ -88,8 +95,13 @@ public class CandidaturesFragment extends Fragment {
     }
 
     private void populateCandidatures() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, candidatures);
-        candidaturesList.setAdapter(adapter);
+        if(getArguments().getString("candidatureType") == "validate") {
+            CandidatureListAdapter adapter = new CandidatureListAdapter(candidatures, "done", getContext());
+            candidaturesList.setAdapter(adapter);
+        } else {
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, candidaturesFormatees);
+            candidaturesList.setAdapter(adapter);
+        }
     }
 
 }

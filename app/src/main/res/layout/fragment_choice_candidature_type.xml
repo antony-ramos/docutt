@@ -22,11 +22,11 @@
         android:id="@+id/candidature_type_validate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Validées par un professeur" />
+        android:text="A effectuer" />
 
     <Button
         android:id="@+id/candidature_type_done"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Déjà effectuées" />
+        android:text="effectuées" />
 </LinearLayout>

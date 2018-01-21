@@ -46,6 +46,20 @@ public class HttpUtils {
         });
     }
 
+    public static void patch(final Context context, final String url, final Header[] headers, final HttpEntity entity,
+                             final ResponseHandlerInterface responseHandler) {
+        client.removeAllHeaders();
+
+        Task<GetTokenResult> task = FirebaseAuth.getInstance().getCurrentUser().getToken(true);
+        task.addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+            @Override
+            public void onComplete(@NonNull Task<GetTokenResult> task) {
+                client.addHeader("Authorization", task.getResult().getToken());
+                client.patch(context, getAbsoluteUrl(url), headers, entity, "application/json", responseHandler);
+            }
+        });
+    }
+
     public static void postWithoutAuthorization(final Context context, final String url, final Header[] headers, final HttpEntity entity,
                                                 final ResponseHandlerInterface responseHandler) {
         client.removeAllHeaders();
