@@ -11,6 +11,11 @@
             android:title="Voir les candidats" />
 
         <item
+            android:id="@+id/nav_creneaux"
+            android:icon="@android:drawable/ic_menu_save"
+            android:title="Mes créneaux" />
+
+        <item
             android:id="@+id/nav_ajouter_creneau"
             android:icon="@android:drawable/ic_input_add"
             android:title="Ajouter des créneaux" />

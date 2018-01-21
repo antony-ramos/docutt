@@ -181,7 +181,7 @@ public class FilterFragment extends Fragment {
     }
 
     private void prepareListData() {
-        HttpUtils.get("/ue/", null, new JsonHttpResponseHandler() {
+        HttpUtils.get("ue", null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 // If the response is JSONObject instead of expected JSONArray

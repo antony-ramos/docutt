@@ -13,6 +13,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
+import fr.utt.if26.projetx.utils.HttpUtils;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,21 +55,36 @@ public class AjouterUeFragment extends Fragment {
         validate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ueName.getText().toString().trim().length() > 0) {
-                    if (editing == true) editUe();
-                    else createUe();
-                } else
-                    Toast.makeText(getContext(), "Veuillez donner un nom à votre UE.", Toast.LENGTH_LONG).show();
+                if (ueName.getText().toString().trim().length() > 0) createUe();
+                else Toast.makeText(getContext(), "Veuillez donner un nom à votre UE.", Toast.LENGTH_LONG).show();
             }
         });
     }
 
-    private void editUe() {
-        Toast.makeText(getContext(), "UE éditée", Toast.LENGTH_LONG).show();
-    }
 
     private void createUe() {
-        Toast.makeText(getContext(), ueName.getText().toString() + " créée", Toast.LENGTH_LONG).show();
+        Gson gson = new Gson();
+        HashMap ue = new HashMap();
+        ue.put("nom", ueName.getText().toString());
+        String json = gson.toJson(ue);
+        try {
+            StringEntity entity = new StringEntity(json);
+            HttpUtils.post(getContext(), "ue", null, entity, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    // If the response is JSONObject instead of expected JSONArray
+                    Toast.makeText(getContext(), ueName.getText().toString() + " créée", Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                    // If the response is JSONObject instead of expected JSONArray
+                    Toast.makeText(getContext(), ueName.getText().toString() + " créée", Toast.LENGTH_LONG).show();
+                }
+            });
+        } catch (UnsupportedEncodingException err) {
+            err.printStackTrace();
+        }
     }
 
 }
