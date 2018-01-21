@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +19,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import cz.msebera.android.httpclient.Header;
 import fr.utt.if26.projetx.database.Filtre;
+import fr.utt.if26.projetx.utils.HttpUtils;
 import fr.utt.if26.projetx.utils.Router;
 
 public class FilterFragment extends Fragment {
@@ -31,6 +39,8 @@ public class FilterFragment extends Fragment {
     private Button validate;
     private RecyclerView recyclerView;
     private GridLayout gridLayout;
+
+    ChipsAdapter adapter;
 
     private ArrayList<String> UE = new ArrayList<>();
     private HashMap<String, ArrayList<Integer>> horairesNonVoulus = new HashMap<>();
@@ -76,7 +86,7 @@ public class FilterFragment extends Fragment {
             prepareFilter(getArguments().getString("filterName"));
         else prepareListData();
         populateHoraires();
-        ChipsAdapter adapter = new ChipsAdapter(UE);
+        adapter = new ChipsAdapter(UE);
         recyclerView.setAdapter(adapter);
     }
 
@@ -171,14 +181,27 @@ public class FilterFragment extends Fragment {
     }
 
     private void prepareListData() {
-        UE.add("LO02");
-        UE.add("IF26");
-        UE.add("RE12");
-        UE.add("AAAA");
-        UE.add("BBBB");
-        UE.add("CCCC");
-        UE.add("DDDD");
-        UE.add("FFFF");
+        HttpUtils.get("/ue/", null, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                // If the response is JSONObject instead of expected JSONArray
+                Log.d("object", response.toString());
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                // If the response is JSONObject instead of expected JSONArray
+                Log.d("object", response.toString());
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        UE.add(response.getJSONObject(i).getString("nom"));
+                        adapter.notifyDataSetChanged();
+                    } catch (JSONException err) {
+                        err.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
     private void prepareFilter(String name) {

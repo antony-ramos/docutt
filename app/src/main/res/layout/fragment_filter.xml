@@ -52,12 +52,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <ImageButton
-            android:id="@+id/imageButton5"
-            android:layout_width="match_parent"
-            android:layout_height="38dp"
-            android:src="@android:drawable/ic_input_add" />
-
         <TextView
             android:id="@+id/textView31"
             android:layout_width="match_parent"
