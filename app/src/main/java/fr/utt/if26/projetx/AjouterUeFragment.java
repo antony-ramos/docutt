@@ -34,13 +34,11 @@ public class AjouterUeFragment extends Fragment {
 
     private EditText ueName;
     private Button validate;
-    private boolean editing = false;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //returning our layout file
-        //change R.layout.yourlayoutfilename for each of your fragments
         return inflater.inflate(R.layout.fragment_ajouter_ue, container, false);
     }
 

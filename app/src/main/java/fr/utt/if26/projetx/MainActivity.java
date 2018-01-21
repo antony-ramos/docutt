@@ -240,6 +240,18 @@ public class MainActivity extends AppCompatActivity
                 fragment = new AjouterUeFragment();
                 args.putString("from", "nav_filters");
                 break;
+            case R.id.nav_ajouter_creneau:
+                fragment = new ChoiceUeFragment();
+                args.putString("from", "nav_ajouter_creneau");
+                break;
+            case R.id.nav_professor_candidatures:
+                fragment = new ChoiceUeFragment();
+                args.putString("from", "nav_professor_candidatures");
+                break;
+            case R.id.nav_creneaux:
+                fragment = new ChoiceUeFragment();
+                args.putString("from", "nav_creneaux");
+                break;
         }
 
         //replacing the fragment
