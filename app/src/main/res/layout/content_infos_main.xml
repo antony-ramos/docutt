@@ -21,19 +21,10 @@
             android:layout_height="wrap_content"
             android:text="@string/whats_new" />
 
-        <ListView
-            android:id="@+id/listView_whatsnew"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="horizontal">
-
-        </ListView>
-
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/textview_heures_effectues"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Votre quota d'heures : UNDEFINED" />
+            android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/textView4"
