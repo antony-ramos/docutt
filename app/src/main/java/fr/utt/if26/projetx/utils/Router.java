@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 
 import fr.utt.if26.projetx.CandidateFragment;
+import fr.utt.if26.projetx.CandidatureProfFragment;
 import fr.utt.if26.projetx.CandidaturesFragment;
 import fr.utt.if26.projetx.ChoiceCandidatureTypeFragment;
 import fr.utt.if26.projetx.ChoiceFilterFragment;
@@ -45,6 +46,9 @@ public class Router {
                 break;
             case "CreneauListFragment":
                 fragment = new CreneauListFragment();
+                break;
+            case "CandidatureProfFragment":
+                fragment = new CandidatureProfFragment();
                 break;
             default:
                 fragment = new MainContent();
