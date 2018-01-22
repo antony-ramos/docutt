@@ -1,7 +1,6 @@
 package fr.utt.if26.projetx;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,15 +18,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import fr.utt.if26.projetx.utils.HttpUtils;
-import fr.utt.if26.projetx.utils.Router;
 
 /**
  * Created by raphael on 21/01/2018.
@@ -66,14 +62,14 @@ public class CandidatureListAdapter extends BaseAdapter implements ListAdapter {
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.list_candidature_button, null);
+            view = inflater.inflate(R.layout.list_textview_button, null);
         }
 
         //Handle buttons and add onClickListeners
-        TextView textView = view.findViewById(R.id.text_candidature);
+        TextView textView = view.findViewById(R.id.text_list_textview_button);
         textView.setText((String)candidatures.get(position).get("candidature"));
 
-        Button button = view.findViewById(R.id.button_validate_candidature);
+        Button button = view.findViewById(R.id.button_list_textview_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

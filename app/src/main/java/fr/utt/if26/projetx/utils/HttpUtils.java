@@ -32,6 +32,19 @@ public class HttpUtils {
         });
     }
 
+    public static void delete(final String url, final RequestParams params, final AsyncHttpResponseHandler responseHandler) {
+        client.removeAllHeaders();
+
+        Task<GetTokenResult> task = FirebaseAuth.getInstance().getCurrentUser().getToken(true);
+        task.addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+            @Override
+            public void onComplete(@NonNull Task<GetTokenResult> task) {
+                client.addHeader("Authorization", task.getResult().getToken());
+                client.delete(getAbsoluteUrl(url), params, responseHandler);
+            }
+        });
+    }
+
     public static void post(final Context context, final String url, final Header[] headers, final HttpEntity entity,
                                     final ResponseHandlerInterface responseHandler) {
         client.removeAllHeaders();
