@@ -72,8 +72,6 @@ public class ChoiceUeFragment extends Fragment {
 
     private String chooseRedirection() {
         switch (getArguments().getString("from")){
-            case "nav_ajouter_creneau":
-                return "ChoiceUeFragment";
             case "nav_professor_candidatures":
                 return "ChoiceUeFragment";
             case "nav_creneaux":

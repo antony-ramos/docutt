@@ -108,7 +108,7 @@ public class CandidateFragment extends Fragment {
                             creneau.put("id", response.getJSONObject(i).getInt("id"));
                             creneau.put("date", response.getJSONObject(i).getString("date"));
                             creneau.put("heure_debut", response.getJSONObject(i).getInt("heure_debut"));
-                            creneau.put("duree", response.getJSONObject(i).getInt("duree"));
+                            creneau.put("editDuree", response.getJSONObject(i).getInt("editDuree"));
                             creneau.put("ue", response.getJSONObject(i).getString("ue"));
                             creneaux.add(creneau);
                         } catch (JSONException err) {
@@ -200,7 +200,7 @@ public class CandidateFragment extends Fragment {
             String ueName = (String)creneaux.get(position).get("ue");
             String date = (String)creneaux.get(position).get("date");
             int heure_debut = (int)creneaux.get(position).get("heure_debut");
-            int heure_fin = (int)creneaux.get(position).get("heure_debut") + (int)creneaux.get(position).get("duree");
+            int heure_fin = (int)creneaux.get(position).get("heure_debut") + (int)creneaux.get(position).get("editDuree");
             String texte = ueName + ": " + date + " - " + heure_debut + "h - " + heure_fin + "h";
             checkbox.setText(texte);
             checkbox.setOnClickListener(new View.OnClickListener() {

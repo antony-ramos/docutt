@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity
                 args.putString("from", "nav_filters");
                 break;
             case R.id.nav_ajouter_creneau:
-                fragment = new ChoiceUeFragment();
+                fragment = new CreneauFragment();
                 args.putString("from", "nav_ajouter_creneau");
                 break;
             case R.id.nav_professor_candidatures:

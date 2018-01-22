@@ -79,7 +79,7 @@ public class CandidaturesFragment extends Fragment {
                         String ue = response.getJSONObject(i).getJSONObject("creneau").getString("ue");
                         String date = response.getJSONObject(i).getJSONObject("creneau").getString("date");
                         int heure_debut = response.getJSONObject(i).getJSONObject("creneau").getInt("heure_debut");
-                        int heure_fin = heure_debut + response.getJSONObject(i).getJSONObject("creneau").getInt("duree");
+                        int heure_fin = heure_debut + response.getJSONObject(i).getJSONObject("creneau").getInt("editDuree");
                         candidaturesFormatees.add(ue + ": " + date + " - " + heure_debut + "h - " + heure_fin + "h");
                         HashMap<String, Object> candidature = new HashMap<>();
                         candidature.put("id", response.getJSONObject(i).getInt("id"));

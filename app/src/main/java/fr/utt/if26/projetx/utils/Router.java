@@ -10,6 +10,7 @@ import fr.utt.if26.projetx.CandidateFragment;
 import fr.utt.if26.projetx.CandidaturesFragment;
 import fr.utt.if26.projetx.ChoiceCandidatureTypeFragment;
 import fr.utt.if26.projetx.ChoiceFilterFragment;
+import fr.utt.if26.projetx.CreneauFragment;
 import fr.utt.if26.projetx.FilterFragment;
 import fr.utt.if26.projetx.MainContent;
 import fr.utt.if26.projetx.R;
@@ -37,6 +38,9 @@ public class Router {
                 break;
             case "CandidaturesFragment":
                 fragment = new CandidaturesFragment();
+                break;
+            case "CreneauFragment":
+                fragment = new CreneauFragment();
                 break;
             default:
                 fragment = new MainContent();

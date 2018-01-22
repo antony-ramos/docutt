@@ -1,0 +1,110 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="fr.utt.if26.projetx.CreneauFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:text="Nom de l'UE"
+                android:textAlignment="textStart"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/spinner_ue"
+                android:layout_width="97dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:text="Heure de début"
+                android:textAlignment="textStart"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/heure_debut"
+                android:layout_width="121dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="Heure de début"
+                android:inputType="numberDecimal"
+                android:singleLine="false" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:text="Durée (en heures)"
+                android:textAlignment="textStart"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/duree"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="Durée"
+                android:imeOptions="actionDone"
+                android:inputType="numberDecimal"
+                android:textAlignment="textStart" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choisissez une date"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/button_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="date" />
+
+        <Button
+            android:id="@+id/validate_creneau"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Valider" />
+    </LinearLayout>
+</ScrollView>
