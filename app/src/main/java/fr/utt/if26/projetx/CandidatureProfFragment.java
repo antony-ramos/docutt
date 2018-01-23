@@ -84,6 +84,7 @@ public class CandidatureProfFragment extends Fragment {
 
     private void populateCandidatures() {
         CandidatureProfAdapter adapter = new CandidatureProfAdapter(candidatures, getContext());
+        if(candidaturesList.getAdapter() != null) candidaturesList.removeAllViews();
         candidaturesList.setAdapter(adapter);
     }
 

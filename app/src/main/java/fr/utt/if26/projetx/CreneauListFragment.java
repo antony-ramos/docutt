@@ -82,6 +82,7 @@ public class CreneauListFragment extends Fragment {
 
     private void populateCandidatures() {
         CreneauListAdapter adapter = new CreneauListAdapter(creneaux, getContext());
+        if(creneauList.getAdapter() != null) creneauList.removeAllViews();
         creneauList.setAdapter(adapter);
     }
 

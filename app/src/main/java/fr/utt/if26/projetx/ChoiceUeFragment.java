@@ -42,6 +42,7 @@ public class ChoiceUeFragment extends Fragment {
         getActivity().setTitle("Choisir une UE");
         listView = getActivity().findViewById(R.id.choice_ue);
         adapter = new ButtonUeAdapter(UE, getContext(), "ChoiceUeFragment", chooseRedirection());
+        if(listView.getAdapter() != null) listView.removeAllViews();
         listView.setAdapter(adapter);
         populateUe();
     }
@@ -73,9 +74,9 @@ public class ChoiceUeFragment extends Fragment {
     private String chooseRedirection() {
         switch (getArguments().getString("from")){
             case "nav_professor_candidatures":
-                return "CandidatureProfFragment";
+                return "ChoiceUeFragment";
             case "nav_creneaux":
-                return "CreneauListFragment";
+                return "ChoiceUeFragment";
             default:
                 return "ChoiceUeFragment";
         }

@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -258,6 +260,7 @@ public class MainActivity extends AppCompatActivity
         if (fragment != null) {
             fragment.setArguments(args);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            FragmentManager fm = getSupportFragmentManager();
             ft.replace(R.id.content_frame, fragment);
             ft.addToBackStack(null);
             ft.commit();

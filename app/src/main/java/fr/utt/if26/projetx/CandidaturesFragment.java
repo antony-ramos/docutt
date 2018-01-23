@@ -31,8 +31,8 @@ import fr.utt.if26.projetx.utils.HttpUtils;
 public class CandidaturesFragment extends Fragment {
 
     private ListView candidaturesList;
-    private ArrayList<String> candidaturesFormatees = new ArrayList<>();
-    private ArrayList<HashMap<String, Object>> candidatures = new ArrayList<>();
+    private ArrayList<String> candidaturesFormatees;
+    private ArrayList<HashMap<String, Object>> candidatures;
 
     @Nullable
     @Override
@@ -45,8 +45,10 @@ public class CandidaturesFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //you can set the title for your toolbar here for different fragments different titles
+        //you can set the title for your toolbar here for different fragments different titles;
         getActivity().setTitle("Candidatures");
+        candidaturesFormatees  = new ArrayList<>();
+        candidatures = new ArrayList<>();
         candidaturesList = getActivity().findViewById(R.id.liste_candidatures);
         getCandidatures();
     }
@@ -95,6 +97,7 @@ public class CandidaturesFragment extends Fragment {
     }
 
     private void populateCandidatures() {
+        if(candidaturesList.getAdapter() != null) candidaturesList.removeAllViews();
         if(getArguments().getString("candidatureType") == "validate") {
             CandidatureListAdapter adapter = new CandidatureListAdapter(candidatures, "done", getContext());
             candidaturesList.setAdapter(adapter);

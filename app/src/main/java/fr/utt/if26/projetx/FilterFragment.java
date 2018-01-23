@@ -42,7 +42,7 @@ public class FilterFragment extends Fragment {
 
     ChipsAdapter adapter;
 
-    private ArrayList<String> UE = new ArrayList<>();
+    private ArrayList<String> UE;
     private HashMap<String, ArrayList<Integer>> horairesNonVoulus = new HashMap<>();
 
     public final String[] jours = {"lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"};
@@ -66,6 +66,7 @@ public class FilterFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("Filtres");
+        UE = new ArrayList<>();
         filterName = getActivity().findViewById(R.id.filter_name);
         validate = getActivity().findViewById(R.id.validate_filter);
         validate.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +88,7 @@ public class FilterFragment extends Fragment {
         else prepareListData();
         populateHoraires();
         adapter = new ChipsAdapter(UE);
+        if(recyclerView.getAdapter() != null) recyclerView.removeAllViews();
         recyclerView.setAdapter(adapter);
     }
 
