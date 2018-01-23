@@ -126,7 +126,6 @@ public class CandidateFragment extends Fragment {
 
     private void populateCreneau() {
         adapter = new CheckboxAdapter(creneaux, getContext());
-        if(creneauList.getAdapter() != null) creneauList.removeAllViews();
         creneauList.setAdapter(adapter);
     }
 

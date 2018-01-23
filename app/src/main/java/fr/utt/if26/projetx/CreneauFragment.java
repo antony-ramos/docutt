@@ -50,7 +50,7 @@ public class CreneauFragment extends Fragment {
     EditText editDuree;
     Button buttonDate;
     Button buttonValidate;
-    List<String> spinnerArray = new ArrayList<>();
+    List<String> spinnerArray;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,6 +62,7 @@ public class CreneauFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         getActivity().setTitle("Créer un créneau");
+        spinnerArray  = new ArrayList<>();
         spinnerUe = getActivity().findViewById(R.id.spinner_ue);
         populateUeSpinner();
         editHeureDebut = getActivity().findViewById(R.id.heure_debut);
@@ -118,7 +119,6 @@ public class CreneauFragment extends Fragment {
                 }
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, spinnerArray);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                if(spinnerUe.getAdapter() != null) spinnerUe.removeAllViews();
                 spinnerUe.setAdapter(adapter);
             }
         });

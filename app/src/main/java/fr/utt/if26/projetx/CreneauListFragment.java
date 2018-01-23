@@ -30,8 +30,8 @@ import fr.utt.if26.projetx.utils.HttpUtils;
 public class CreneauListFragment extends Fragment {
 
     private ListView creneauList;
-    private ArrayList<String> creneauxFormates = new ArrayList<>();
-    private ArrayList<HashMap<String, Object>> creneaux = new ArrayList<>();
+    private ArrayList<String> creneauxFormates;
+    private ArrayList<HashMap<String, Object>> creneaux;
 
     @Nullable
     @Override
@@ -45,7 +45,9 @@ public class CreneauListFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
-        getActivity().setTitle("Candidatures");
+        getActivity().setTitle("Créneaux");
+        creneauxFormates  = new ArrayList<>();
+        creneaux = new ArrayList<>();
         creneauList = getActivity().findViewById(R.id.liste_creneaux);
         getCreneaux();
     }
@@ -82,7 +84,6 @@ public class CreneauListFragment extends Fragment {
 
     private void populateCandidatures() {
         CreneauListAdapter adapter = new CreneauListAdapter(creneaux, getContext());
-        if(creneauList.getAdapter() != null) creneauList.removeAllViews();
         creneauList.setAdapter(adapter);
     }
 

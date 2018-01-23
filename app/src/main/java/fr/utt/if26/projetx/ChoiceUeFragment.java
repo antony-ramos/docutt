@@ -22,7 +22,7 @@ import fr.utt.if26.projetx.utils.HttpUtils;
 
 public class ChoiceUeFragment extends Fragment {
 
-    private ArrayList<String> UE = new ArrayList<>();
+    private ArrayList<String> UE;
     private ListView listView;
 
     private ButtonUeAdapter adapter;
@@ -41,8 +41,8 @@ public class ChoiceUeFragment extends Fragment {
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("Choisir une UE");
         listView = getActivity().findViewById(R.id.choice_ue);
+        UE = new ArrayList<>();
         adapter = new ButtonUeAdapter(UE, getContext(), "ChoiceUeFragment", chooseRedirection());
-        if(listView.getAdapter() != null) listView.removeAllViews();
         listView.setAdapter(adapter);
         populateUe();
     }
@@ -74,9 +74,9 @@ public class ChoiceUeFragment extends Fragment {
     private String chooseRedirection() {
         switch (getArguments().getString("from")){
             case "nav_professor_candidatures":
-                return "ChoiceUeFragment";
+                return "CandidatureProfFragment";
             case "nav_creneaux":
-                return "ChoiceUeFragment";
+                return "CreneauListFragment";
             default:
                 return "ChoiceUeFragment";
         }

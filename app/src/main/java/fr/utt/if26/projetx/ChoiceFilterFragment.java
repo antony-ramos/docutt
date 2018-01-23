@@ -32,7 +32,6 @@ public class ChoiceFilterFragment extends Fragment {
         getActivity().setTitle("Choisir un filtre");
         filtres = Filtre.find(Filtre.class, null, null);
         listView = getActivity().findViewById(R.id.choice_filter);
-        if(listView.getAdapter() != null) listView.removeAllViews();
         listView.setAdapter(new ButtonFiltreAdapter(filtres, getContext(), "ChoiceFilterFragment", chooseRedirection()));
     }
 

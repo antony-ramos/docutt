@@ -97,7 +97,6 @@ public class CandidaturesFragment extends Fragment {
     }
 
     private void populateCandidatures() {
-        if(candidaturesList.getAdapter() != null) candidaturesList.removeAllViews();
         if(getArguments().getString("candidatureType") == "validate") {
             CandidatureListAdapter adapter = new CandidatureListAdapter(candidatures, "done", getContext());
             candidaturesList.setAdapter(adapter);

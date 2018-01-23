@@ -88,7 +88,6 @@ public class FilterFragment extends Fragment {
         else prepareListData();
         populateHoraires();
         adapter = new ChipsAdapter(UE);
-        if(recyclerView.getAdapter() != null) recyclerView.removeAllViews();
         recyclerView.setAdapter(adapter);
     }
 

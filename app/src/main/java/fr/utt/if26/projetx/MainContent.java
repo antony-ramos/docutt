@@ -95,9 +95,6 @@ public class MainContent extends Fragment {
     }
 
     private void populateContent() {
-        if (prochainesHeures.getAdapter() != null) {
-            prochainesHeures.removeAllViews();
-        }
         prochainesHeures.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, futuresCreneaux));
         textHeuresEffectuees.setText("Vous avez déjà effectué " + heuresEffectues + " heures.");
     }
